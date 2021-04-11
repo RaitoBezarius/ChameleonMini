@@ -48,8 +48,8 @@ void EVENT_USB_Device_Disconnect(void);
 void EVENT_USB_Device_ConfigurationChanged(void);
 void EVENT_USB_Device_ControlRequest(void);
 
-INLINE void TerminalSendChar(char c) { CDC_Device_SendByte(&TerminalHandle, c); }
-INLINE void TerminalSendByte(uint8_t Byte) { CDC_Device_SendByte(&TerminalHandle, Byte); }
+//INLINE void TerminalSendChar(char c) { CDC_Device_SendByte(&TerminalHandle, c); }
+//INLINE void TerminalSendByte(uint8_t Byte) { CDC_Device_SendByte(&TerminalHandle, Byte); }
 
 INLINE void TerminalFlushBuffer(void) {
     CDC_Device_Flush(&TerminalHandle);

@@ -33,6 +33,14 @@ SETTINGS    += -DSUPPORT_UID7_FIX_MANUFACTURER_BYTE
 #Support activating firmware upgrade mode through command-line
 SETTINGS    += -DSUPPORT_FIRMWARE_UPGRADE
 
+#Default configuration
+#SETTINGS   += -DDEFAULT_CONFIGURATION=CONFIG_MF_CLASSIC_MINI_4B
+SETTINGS	+= -DDEFAULT_CONFIGURATION=CONFIG_MF_CLASSIC_1K
+#SETTINGS	+= -DDEFAULT_CONFIGURATION=CONFIG_MF_CLASSIC_4K
+#SETTINGS	+= -DDEFAULT_CONFIGURATION=CONFIG_MF_ULTRALIGHT
+#SETTINGS	+= -DDEFAULT_CONFIGURATION=CONFIG_NONE
+#SETTINGS	+= -DDEFAULT_CONFIGURATION=CONFIG_ISO14443A_READER
+
 #Default button actions
 #SETTINGS	+= -DDEFAULT_RBUTTON_ACTION=BUTTON_ACTION_UID_RANDOM
 #SETTINGS	+= -DDEFAULT_RBUTTON_ACTION=BUTTON_ACTION_UID_LEFT_INCREMENT
@@ -183,7 +191,7 @@ CC_FLAGS     = -flto -DUSE_LUFA_CONFIG_HEADER -DFLASH_DATA_ADDR=$(FLASH_DATA_ADD
 	       -D__AVR_ATxmega128A4U____ -D__PROG_TYPES_COMPAT__ -DMAX_ENDPOINT_INDEX=4 \
 	       -std=gnu99 -Werror=implicit-function-declaration \
 	       -fno-inline-small-functions -fshort-enums -fpack-struct \
-	       -ffunction-sections -Wl,--gc-sections --data-sections -ffunction-secitons \
+	       -ffunction-sections -Wl,--gc-sections --data-sections -ffunction-sections \
 	       -Wl,-relax -fno-split-wide-types -fno-tree-scev-cprop \
 	       -fno-aggressive-loop-optimizations
 LD_FLAGS     = -Wl,--section-start=.flashdata=$(FLASH_DATA_ADDR) -Wl,--section-start=.spmhelper=$(SPM_HELPER_ADDR)
