@@ -29,7 +29,7 @@ USB_ClassInfo_CDC_Device_t TerminalHandle = {
 };
 
 uint8_t bUSBTerminal = 0;
-uint8_t TerminalBuffer[TERMINAL_BUFFER_SIZE];
+uint8_t TerminalBuffer[TERMINAL_BUFFER_SIZE] = { 0x00 };
 TerminalStateEnum TerminalState = TERMINAL_UNINITIALIZED;
 static uint8_t TerminalInitDelay = INIT_DELAY;
 

@@ -10,6 +10,11 @@
  *
  */
 
+#if defined(CONFIG_MF_CLASSIC_1K_SUPPORT) || \
+     defined(CONFIG_MF_CLASSIC_1K_7B_SUPPORT) || \
+     defined(CONFIG_MF_CLASSIC_4K_SUPPORT) || \
+     defined(CONFIG_MF_CLASSIC_4K_7B_SUPPORT)
+
 #include "System.h"
 #include "MifareClassic.h"
 
@@ -1314,3 +1319,5 @@ void MifareClassicGetSak(uint8_t * Sak) {
 void MifareClassicSetSak(uint8_t Sak) {
     CardSAKValue = Sak;
 }
+
+#endif

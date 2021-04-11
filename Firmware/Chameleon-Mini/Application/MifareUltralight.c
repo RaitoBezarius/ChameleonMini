@@ -5,6 +5,8 @@
  *      Author: skuser
  */
 
+#ifdef CONFIG_MF_ULTRALIGHT_SUPPORT
+
 #include "MifareUltralight.h"
 #include "ISO14443-3A.h"
 #include "../Codec/ISO14443-2A.h"
@@ -696,3 +698,5 @@ void MifareUltralightSetSak(uint8_t Sak)
 {
     CardSAKValue = Sak;
 }
+
+#endif /* CONFIG_MF_ULTRALIGHT_SUPPORT */

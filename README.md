@@ -5,8 +5,6 @@ This is NOT the official repository of ChameleonMini, a freely programmable, por
 Chameleon BLE API
 [**Codes.RAR**](https://github.com/RfidResearchGroup/ChameleonBLEAPI/blob/master/code.rar)
 
-Our Project is based on the open-source project by ChameleonMini RevG by Kasper & Oswald [Webshop](https://shop.kasper.it/). 
-
 Our ChameleonMini / ChameleonTiny by ProxGrind is available on Indiegogo now. 
 **[Done](https://www.indiegogo.com/campaigns/chameleonmini-rev-g-chameleontiny-by-proxgrind/)**
 
@@ -185,6 +183,8 @@ When shutting down, press and hold the button next to USB and then connect USB. 
 Charging: Any time you connect USB, it will automatically start charging. Stop automatically after filling. The white LED indicates the power level.
 Detect memory full: If the memory is full during dense flow detection, multiple red LEDs will be abnormally lit.
 
+To upgrade the firmware of your ChameleonMini, please visit the [Getting Started page](https://cdn.statically.io/gh/emsec/ChameleonMini/master/Doc/Doxygen/html/_page__getting_started.html) from the [doxygen documentation](https://cdn.statically.io/gh/emsec/ChameleonMini/master/Doc/Doxygen/html/index.html).
+
 C.Hardware Introduction
 =======================
 
@@ -343,7 +343,7 @@ Port Type: Micro USB (ChameleonMini) / Type-C (ChameleonTiny)
 Repository Structure
 --------------------
 The code repository contains
-* Doc: A doxygen documentation 
+* Doc: A doxygen documentation
 * Drivers: Chameleon drivers for Windows and Linux
 * Dumps: Dumps of different smartcards
 * Hardware: The layout and schematics of the PCB

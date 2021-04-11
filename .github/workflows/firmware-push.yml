@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 name: Firmware Build (proxgrind Branch Push, Pre-release with Artifacts)
 
 on:
   push:
     branches: [ proxgrind ]
+=======
+name: Firmware Build (master Branch Push, Pre-release with Artifacts)
+
+on:
+  push:
+    branches: [ master ]
+>>>>>>> emsec/master
 
 jobs:
   build:

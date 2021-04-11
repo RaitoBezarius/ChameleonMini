@@ -27,7 +27,7 @@ CommandStatusIdType CommandGetVersion(char *OutParam) {
     snprintf_P(OutParam, TERMINAL_BUFFER_SIZE, PSTR(
 //    "ChameleonMini RevG %S using LUFA %S compiled with AVR-GCC %S. Based on the open-source NFC tool ChameleonMini. https://github.com/emsec/ChameleonMini commit %S"
 //    ), PSTR(CHAMELEON_MINI_VERSION_STRING), PSTR(LUFA_VERSION_STRING), PSTR(__VERSION__), PSTR(COMMIT_ID)
-                   "ChameleonMini RevG compiled at %S %S(%S) using LUFA %S with AVR-GCC %S."
+                   "ChameleonMini RevS;G compiled at %S %S(%S) using LUFA %S with AVR-GCC %S."
                ), PSTR(BUILD_DATE), PSTR(__TIME__), PSTR(COMMIT_ID), PSTR(LUFA_VERSION_STRING), PSTR(__VERSION__)
               );
 
@@ -45,6 +45,8 @@ CommandStatusIdType CommandSetConfig(char *OutMessage, const char *InParam) {
         ConfigurationGetList(OutMessage, TERMINAL_BUFFER_SIZE);
         return COMMAND_INFO_OK_WITH_TEXT_ID;
     } else if (ConfigurationSetByName(InParam)) {
+        MemoryClear();
+        ConfigurationSetByName(InParam);
         SETTING_UPDATE(GlobalSettings.ActiveSettingPtr->Configuration);
         return COMMAND_INFO_OK_ID;
     } else {
@@ -340,6 +342,23 @@ CommandStatusIdType CommandSetLedRed(char *OutMessage, const char *InParam) {
     }
 }
 
+CommandStatusIdType CommandGetPin(char *OutParam) {
+    PinGetFuncByName(OutParam, TERMINAL_BUFFER_SIZE);
+
+    return COMMAND_INFO_OK_WITH_TEXT_ID;
+}
+
+CommandStatusIdType CommandSetPin(char *OutMessage, const char *InParam) {
+    if (COMMAND_IS_SUGGEST_STRING(InParam)) {
+        PinGetFuncList(OutMessage, TERMINAL_BUFFER_SIZE);
+        return COMMAND_INFO_OK_WITH_TEXT_ID;
+    } else if (PinSetFuncByName(InParam)) {
+        return COMMAND_INFO_OK_ID;
+    } else {
+        return COMMAND_ERR_INVALID_PARAM_ID;
+    }
+}
+
 CommandStatusIdType CommandGetLogMode(char *OutParam) {
     /* Get Logmode */
     LogGetModeByName(OutParam, TERMINAL_BUFFER_SIZE);
@@ -460,6 +479,9 @@ CommandStatusIdType CommandGetSysTick(char *OutParam) {
 
 #ifdef CONFIG_ISO14443A_READER_SUPPORT
 CommandStatusIdType CommandExecParamSend(char *OutMessage, const char *InParams) {
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else 
     if (GlobalSettings.ActiveSettingPtr->Configuration != CONFIG_ISO14443A_READER)
         return COMMAND_ERR_INVALID_USAGE_ID;
 
@@ -495,9 +517,13 @@ CommandStatusIdType CommandExecParamSend(char *OutMessage, const char *InParams)
     Reader14443ACodecStart();
 
     return TIMEOUT_COMMAND;
+    #endif
 }
 
 CommandStatusIdType CommandExecParamSendRaw(char *OutMessage, const char *InParams) {
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else
     if (GlobalSettings.ActiveSettingPtr->Configuration != CONFIG_ISO14443A_READER)
         return COMMAND_ERR_INVALID_USAGE_ID;
 
@@ -536,9 +562,13 @@ CommandStatusIdType CommandExecParamSendRaw(char *OutMessage, const char *InPara
     Reader14443ACodecStart();
 
     return TIMEOUT_COMMAND;
+    #endif
 }
 
 CommandStatusIdType CommandExecDumpMFU(char *OutMessage) {
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else
     if (GlobalSettings.ActiveSettingPtr->Configuration != CONFIG_ISO14443A_READER)
         return COMMAND_ERR_INVALID_USAGE_ID;
     ApplicationReset();
@@ -548,9 +578,13 @@ CommandStatusIdType CommandExecDumpMFU(char *OutMessage) {
     Reader14443ACodecStart();
     CommandLinePendingTaskTimeout = &Reader14443AAppTimeout;
     return TIMEOUT_COMMAND;
+    #endif
 }
 
 CommandStatusIdType CommandExecCloneMFU(char *OutMessage) {
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else
     ConfigurationSetById(CONFIG_ISO14443A_READER);
     ApplicationReset();
 
@@ -559,9 +593,13 @@ CommandStatusIdType CommandExecCloneMFU(char *OutMessage) {
     Reader14443ACodecStart();
     CommandLinePendingTaskTimeout = &Reader14443AAppTimeout;
     return TIMEOUT_COMMAND;
+    #endif
 }
 
 CommandStatusIdType CommandExecGetUid(char *OutMessage) { // this function is for reading the uid in reader mode
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else
     if (GlobalSettings.ActiveSettingPtr->Configuration != CONFIG_ISO14443A_READER)
         return COMMAND_ERR_INVALID_USAGE_ID;
     ApplicationReset();
@@ -571,9 +609,13 @@ CommandStatusIdType CommandExecGetUid(char *OutMessage) { // this function is fo
     Reader14443ACodecStart();
     CommandLinePendingTaskTimeout = &Reader14443AAppTimeout;
     return TIMEOUT_COMMAND;
+    #endif
 }
 
 CommandStatusIdType CommandExecIdentifyCard(char *OutMessage) {
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else
     if (GlobalSettings.ActiveSettingPtr->Configuration != CONFIG_ISO14443A_READER)
         return COMMAND_ERR_INVALID_USAGE_ID;
     ApplicationReset();
@@ -583,6 +625,7 @@ CommandStatusIdType CommandExecIdentifyCard(char *OutMessage) {
     Reader14443ACodecStart();
     CommandLinePendingTaskTimeout = &Reader14443AAppTimeout;
     return TIMEOUT_COMMAND;
+    #endif
 }
 #endif
 
@@ -675,6 +718,9 @@ CommandStatusIdType CommandExecAutocalibrate(char *OutMessage) {
 
 #ifdef CONFIG_ISO14443A_READER_SUPPORT
 CommandStatusIdType CommandExecClone(char *OutMessage) {
+    #ifndef CONFIG_ISO14443A_READER_SUPPORT
+    return COMMAND_ERR_INVALID_USAGE_ID;
+    #else
     ConfigurationSetById(CONFIG_ISO14443A_READER);
 
     ApplicationReset();
@@ -685,6 +731,7 @@ CommandStatusIdType CommandExecClone(char *OutMessage) {
     CommandLinePendingTaskTimeout = &Reader14443AAppTimeout;
 
     return TIMEOUT_COMMAND;
+    #endif
 }
 #endif
 
@@ -835,3 +882,4 @@ CommandStatusIdType CommandGetSakMode(char *OutMessage) {
     OutMessage[1] = '\0';
     return COMMAND_INFO_OK_WITH_TEXT_ID;
 }
+
